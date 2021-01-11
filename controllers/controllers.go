@@ -33,7 +33,7 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 		fmt.Print(err)
 	}
 
-	insertResult, err := userCollection.InsertOne(context.TODO(), person)
+	insertResult, err := userCollection.InsertOne(context.Background(), person)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,7 +53,7 @@ func GetUserProfile(w http.ResponseWriter, r *http.Request) {
 		fmt.Print(e)
 	}
 	var result primitive.M //  an unordered representation of a BSON document which is a Map
-	err := userCollection.FindOne(context.TODO(), bson.D{{"name", body.Name}}).Decode(&result)
+	err := userCollection.FindOne(context.Background(), bson.D{{"name", body.Name}}).Decode(&result)
 	if err != nil {
 
 		//fmt.Println(err)
@@ -84,7 +84,7 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		ReturnDocument: &after,
 	}
 	update := bson.D{{"$set", bson.D{{"city", body.City}, {"name", body.Name}}}}
-	updateResult := userCollection.FindOneAndUpdate(context.TODO(), bson.D{{"_id", _id}}, update, &returnOpt)
+	updateResult := userCollection.FindOneAndUpdate(context.Background(), bson.D{{"_id", _id}}, update, &returnOpt)
 
 	var result primitive.M
 	_ = updateResult.Decode(&result)
@@ -102,7 +102,7 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf(err.Error())
 	}
 	opts := options.Delete().SetCollation(&options.Collation{}) // to specify language-specific rules for string comparison, such as rules for lettercase
-	res, err := userCollection.DeleteOne(context.TODO(), bson.D{{"_id", _id}}, opts)
+	res, err := userCollection.DeleteOne(context.Background(), bson.D{{"_id", _id}}, opts)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -116,12 +116,12 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	var results []primitive.M                                   //slice for multiple documents
 
 
-	cur, err := userCollection.Find(context.TODO(), bson.D{{}}) //returns a *mongo.Cursor
+	cur, err := userCollection.Find(context.Background(), bson.D{{}}) //returns a *mongo.Cursor
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
+	for cur.Next(context.Background()) { //Next() gets the next document for corresponding cursor
 
 		var elem primitive.M
 		err := cur.Decode(&elem)
@@ -130,19 +130,19 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 		}
 		results = append(results, elem) // appending document pointed by Next()
 	}
-	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
+	cur.Close(context.Background()) // close the cursor once stream of documents has exhausted
 	fmt.Println("get all users information")
 	json.NewEncoder(w).Encode(results)
 }
 func GetBettwenName(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var results []primitive.M
-	cur, err := userCollection.Find(context.TODO(),bson.D{{"name", bson.D{{"$in", bson.A{"erfan", "bardia"}}}}})
+	cur, err := userCollection.Find(context.Background(),bson.D{{"name", bson.D{{"$in", bson.A{"erfan", "bardia"}}}}})
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
+	for cur.Next(context.Background()) { //Next() gets the next document for corresponding cursor
 		var elem primitive.M
 		err := cur.Decode(&elem)
 		if err != nil {
@@ -150,7 +150,7 @@ func GetBettwenName(w http.ResponseWriter, r *http.Request) {
 		}
 		results = append(results, elem) // appending document pointed by Next()
 	}
-	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
+	cur.Close(context.Background()) // close the cursor once stream of documents has exhausted
 	fmt.Println("get all users information")
 	json.NewEncoder(w).Encode(results)
 }
