@@ -11,7 +11,6 @@ import (
 )
 var userCollection = config.DbConfig().Database("goTest").Collection("users")
 
-
 func main()  {
 	fmt.Println("four data faker for users",time.Now())
 	for i := 0; i < 4; i++ {
@@ -24,12 +23,11 @@ func main()  {
 			Age:      33,
 			City:     fake.City(),
 		}
-		insertResult, err := userCollection.InsertOne(context.TODO(), userfake)
+		insertResult, err := userCollection.InsertOne(context.Background(), userfake)
 		// userCollection.Ins
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		fmt.Println("Inserted a single document: ", insertResult)
 	}
 }
