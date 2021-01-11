@@ -1,11 +1,5 @@
 package models
 
-import (
-	"gopkg.in/go-playground/validator.v9"
-	"strings"
-
-	"fmt"
-)
 
 type User struct {
 
@@ -27,17 +21,14 @@ type Post struct {
 }
 
 type Comment struct {
-
 	Body 		string `json:"body"`
 }
 
 type Category struct {
-
 	name 		string `json:"name"`
 }
 
 type UpdateBody struct {
-
 	Name 		string `json:"name"` //value that has to be matched
 	City 		string `json:"city"` // value that has to be modified
 }

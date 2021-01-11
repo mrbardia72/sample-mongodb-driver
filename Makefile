@@ -15,6 +15,7 @@ cm: ## push to github
 .PHONY: fakeruser
 fakeruser: ## run data facker
 	gor datafaker/data.go
+
 .PHONY: config
 config: ## You can store your credentials using the following command
 	git config credential.helper store

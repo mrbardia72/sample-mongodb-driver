@@ -16,10 +16,6 @@ func CheckErr(err error)  {
 	}
 }
 
-type configDB struct {
-	db *mongo.client
-}
-
 func DbConfig() *mongo.Client {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 
