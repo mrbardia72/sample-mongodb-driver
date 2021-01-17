@@ -13,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
+	"time"
 )
 
 var userCollection = config.DbConfig().Database("goTest").Collection("users") // get collection "users" from db() which returns *mongo.Client
@@ -112,9 +113,9 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
+
 	w.Header().Set("Content-Type", "application/json")
 	var results []primitive.M                                   //slice for multiple documents
-
 
 	cur, err := userCollection.Find(context.Background(), bson.D{{}}) //returns a *mongo.Cursor
 	if err != nil {
@@ -167,6 +168,12 @@ func GetMin(w http.ResponseWriter, r *http.Request)  {
 	helpers.MinVSMax(w, opertion)
 }
 
-func CreatePost(w http.ResponseWriter, r *http.Request)  {
-
+func CountPost(w http.ResponseWriter, r *http.Request)  {
+	opts := options.Count().SetMaxTime(2 * time.Second)
+	count, err := userCollection.CountDocuments(context.Background(), bson.D{{}}, opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("name Bob appears in %v documents", count)
+	json.NewEncoder(w).Encode(count)
 }

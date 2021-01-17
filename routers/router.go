@@ -16,5 +16,6 @@ func RoutersMap(s *mux.Router) {
 	s.HandleFunc("/GetBettwenName", ctr.GetBettwenName).Methods("GET")
 	s.HandleFunc("/GetMax", ctr.GetMax).Methods("GET")
 	s.HandleFunc("/GetMin", ctr.GetMin).Methods("GET")
+	s.HandleFunc("/countposts",ctr.CountPost).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8000", s)) // Run Server
 }

@@ -1,3 +1,1 @@
-# go
-
-A simple CRUD  application using GO and mongodb.
+### A simple CRUD  application using GO and mongodb.
