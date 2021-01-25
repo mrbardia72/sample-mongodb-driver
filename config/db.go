@@ -1,6 +1,5 @@
 package config
 
-
 import (
 	"context"
 	"fmt" 
@@ -17,16 +16,19 @@ func CheckErr(err error)  {
 }
 
 func DbConfig() *mongo.Client {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+
+	ctx := context.Background()
+
+	url := options.Client().ApplyURI("mongodb://localhost:27017")
 
 	// Connect to MongoDB
-	client, err := mongo.Connect(context.Background(), clientOptions)
+	connect, err := mongo.Connect(ctx, url)
 	CheckErr(err)
 
 	// Check the connection
-	err = client.Ping(context.Background(), nil)
+	err = connect.Ping(ctx, nil)
 	CheckErr(err)
 
 	fmt.Println("Connected to MongoDB!")
-	return client
+	return connect
 }

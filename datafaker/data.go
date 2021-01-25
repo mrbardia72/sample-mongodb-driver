@@ -12,18 +12,19 @@ import (
 var userCollection = config.DbConfig().Database("goTest").Collection("users")
 
 func main()  {
+	ctx := context.Background()
 	fmt.Println("four data faker for users",time.Now())
 	for i := 0; i < 4; i++ {
 
 		userfake := models.User{
 			Email:    fake.EmailAddress(),
-			Password: "xv5tdj4%F%&%%f",
+			Password: "password",
 			Phone:    fake.Phone(),
 			Name:     fake.FemaleFirstName(),
 			Age:      33,
 			City:     fake.City(),
 		}
-		insertResult, err := userCollection.InsertOne(context.Background(), userfake)
+		insertResult, err := userCollection.InsertOne(ctx, userfake)
 		// userCollection.Ins
 		if err != nil {
 			log.Fatal(err)

@@ -19,22 +19,17 @@ import (
 var userCollection = config.DbConfig().Database("goTest").Collection("users") // get collection "users" from db() which returns *mongo.Client
 
 func CreateProfile(w http.ResponseWriter, r *http.Request) {
-
+	ctx := context.Background()
 	w.Header().Set("Content-Type", "application/json") // for adding Content-type
 
 	var person models.User
 
-	//errr := models.ValidateUser(person)
-	//if errr!=nil {
-	//	json.NewEncoder(w).Encode(errr)
-	//	return
-	//}
 	err := json.NewDecoder(r.Body).Decode(&person) // storing in person variable of type user
 	if err != nil {
 		fmt.Print(err)
 	}
 
-	insertResult, err := userCollection.InsertOne(context.Background(), person)
+	insertResult, err := userCollection.InsertOne(ctx, person)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,7 +39,7 @@ func CreateProfile(w http.ResponseWriter, r *http.Request) {
 
 }
 func GetUserProfile(w http.ResponseWriter, r *http.Request) {
-
+	ctx := context.Background()
 	w.Header().Set("Content-Type", "application/json")
 
 	var body models.User
@@ -54,7 +49,7 @@ func GetUserProfile(w http.ResponseWriter, r *http.Request) {
 		fmt.Print(e)
 	}
 	var result primitive.M //  an unordered representation of a BSON document which is a Map
-	err := userCollection.FindOne(context.Background(), bson.D{{"name", body.Name}}).Decode(&result)
+	err := userCollection.FindOne(ctx, bson.D{{"name", body.Name}}).Decode(&result)
 	if err != nil {
 
 		//fmt.Println(err)
@@ -64,7 +59,7 @@ func GetUserProfile(w http.ResponseWriter, r *http.Request) {
 
 }
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
-
+	ctx := context.Background()
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)["id"] //get Parameter value as string
@@ -85,7 +80,7 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		ReturnDocument: &after,
 	}
 	update := bson.D{{"$set", bson.D{{"city", body.City}, {"name", body.Name}}}}
-	updateResult := userCollection.FindOneAndUpdate(context.Background(), bson.D{{"_id", _id}}, update, &returnOpt)
+	updateResult := userCollection.FindOneAndUpdate(ctx, bson.D{{"_id", _id}}, update, &returnOpt)
 
 	var result primitive.M
 	_ = updateResult.Decode(&result)
@@ -94,7 +89,7 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteProfile(w http.ResponseWriter, r *http.Request) {
-
+	ctx := context.Background()
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)["id"] //get Parameter value as string
 
@@ -103,7 +98,7 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf(err.Error())
 	}
 	opts := options.Delete().SetCollation(&options.Collation{}) // to specify language-specific rules for string comparison, such as rules for lettercase
-	res, err := userCollection.DeleteOne(context.Background(), bson.D{{"_id", _id}}, opts)
+	res, err := userCollection.DeleteOne(ctx, bson.D{{"_id", _id}}, opts)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -113,16 +108,16 @@ func DeleteProfile(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
-
+	ctx := context.Background()
 	w.Header().Set("Content-Type", "application/json")
 	var results []primitive.M                                   //slice for multiple documents
 
-	cur, err := userCollection.Find(context.Background(), bson.D{{}}) //returns a *mongo.Cursor
+	cur, err := userCollection.Find(ctx, bson.D{{}}) //returns a *mongo.Cursor
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for cur.Next(context.Background()) { //Next() gets the next document for corresponding cursor
+	for cur.Next(ctx) { //Next() gets the next document for corresponding cursor
 
 		var elem primitive.M
 		err := cur.Decode(&elem)
@@ -136,14 +131,15 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(results)
 }
 func GetBettwenName(w http.ResponseWriter, r *http.Request) {
+	ctx := context.Background()
 	w.Header().Set("Content-Type", "application/json")
 	var results []primitive.M
-	cur, err := userCollection.Find(context.Background(),bson.D{{"name", bson.D{{"$in", bson.A{"erfan", "bardia"}}}}})
+	cur, err := userCollection.Find(ctx,bson.D{{"name", bson.D{{"$in", bson.A{"erfan", "bardia"}}}}})
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for cur.Next(context.Background()) { //Next() gets the next document for corresponding cursor
+	for cur.Next(ctx) { //Next() gets the next document for corresponding cursor
 		var elem primitive.M
 		err := cur.Decode(&elem)
 		if err != nil {
@@ -151,26 +147,25 @@ func GetBettwenName(w http.ResponseWriter, r *http.Request) {
 		}
 		results = append(results, elem) // appending document pointed by Next()
 	}
-	cur.Close(context.Background()) // close the cursor once stream of documents has exhausted
+	cur.Close(ctx) // close the cursor once stream of documents has exhausted
 	fmt.Println("get all users information")
 	json.NewEncoder(w).Encode(results)
 }
 
 func GetMax(w http.ResponseWriter, r *http.Request) {
-	//setlimit := mux.Vars(r)["setlimit"]
 	opertion := -1
 	helpers.MinVSMax(w, opertion)
 }
 
 func GetMin(w http.ResponseWriter, r *http.Request)  {
-	//setlimit := mux.Vars(r)["setlimit"]
 	opertion := 1
 	helpers.MinVSMax(w, opertion)
 }
 
 func CountPost(w http.ResponseWriter, r *http.Request)  {
+	ctx := context.Background()
 	opts := options.Count().SetMaxTime(2 * time.Second)
-	count, err := userCollection.CountDocuments(context.Background(), bson.D{{}}, opts)
+	count, err := userCollection.CountDocuments(ctx, bson.D{{}}, opts)
 	if err != nil {
 		log.Fatal(err)
 	}

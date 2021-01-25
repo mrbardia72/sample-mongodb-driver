@@ -16,22 +16,23 @@ import (
 var userCollection = config.DbConfig().Database("goTest").Collection("users") // get collection "users" from db() which returns *mongo.Client
 
 func MinVSMax(w http.ResponseWriter, opertion int) {
+
 	w.Header().Set("Content-Type", "application/json")
 
 	var results []primitive.M
 
-	options := options.Find()
-	options.SetSort(bson.D{{"age", opertion}})
-	options.SetLimit(1)
+	mg := options.Find()
+	mg.SetSort(bson.D{{"age", opertion}})
+	mg.SetLimit(1)
 
 	ctx := context.Background()
-	cur, err := userCollection.Find(ctx, bson.D{}, options)
+	cur, err := userCollection.Find(ctx, bson.D{}, mg)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for cur.Next(context.TODO()) {
+	for cur.Next(ctx) {
 		var elem primitive.M
 		err := cur.Decode(&elem)
 		if err != nil {
@@ -39,6 +40,6 @@ func MinVSMax(w http.ResponseWriter, opertion int) {
 		}
 		results = append(results, elem)
 	}
-	cur.Close(context.TODO())
+	cur.Close(ctx)
 	json.NewEncoder(w).Encode(results)
 }
