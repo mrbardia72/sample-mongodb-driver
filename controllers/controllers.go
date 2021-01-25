@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"../config"
-	"../helpers"
-	"../models"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/mrbardia72/sample-mongodb-driver/config"
+	"github.com/mrbardia72/sample-mongodb-driver/helpers"
+	"github.com/mrbardia72/sample-mongodb-driver/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"

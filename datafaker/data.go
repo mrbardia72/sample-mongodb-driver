@@ -1,11 +1,11 @@
 package main
 
 import (
-	"../config"
-	"../models"
 	"context"
 	"fmt"
 	"github.com/icrowley/fake"
+	"github.com/mrbardia72/sample-mongodb-driver/config"
+	"github.com/mrbardia72/sample-mongodb-driver/models"
 	"log"
 	"time"
 )

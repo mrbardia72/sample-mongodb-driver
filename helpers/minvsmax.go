@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"../config"
+	"github.com/mrbardia72/sample-mongodb-driver/config"
 
 	"context"
 	"encoding/json"

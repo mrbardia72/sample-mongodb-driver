@@ -1,8 +1,8 @@
 package routers
 
 import (
-	ctr "github.com/mrbardia72/sample-mongodb-driver/controllers"
 	"github.com/gorilla/mux"
+	ctr "github.com/mrbardia72/sample-mongodb-driver/controllers"
 	"log"
 	"net/http"
 )
