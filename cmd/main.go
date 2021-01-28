@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./routers"
+	"../routers"
 	"github.com/gorilla/mux"
 )
 
