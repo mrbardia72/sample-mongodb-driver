@@ -18,7 +18,7 @@ fakeruser: ## run data facker
 
 .PHONY: run
 run: ## run data facker
-	run cmd/main.go
+	go run cmd/main.go
 
 .PHONY: config
 config: ## You can store your credentials using the following command

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"../routers"
 	"github.com/gorilla/mux"
+	"github.com/mrbardia72/sample-mongodb-driver/routers"
 )
 
 func main() {

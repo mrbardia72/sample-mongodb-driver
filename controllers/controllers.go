@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/mrbardia72/sample-mongodb-driver/config"
-	"github.com/mrbardia72/sample-mongodb-driver/helpers"
+	"github.com/mrbardia72/sample-mongodb-driver/internal/helpers"
 	"github.com/mrbardia72/sample-mongodb-driver/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
