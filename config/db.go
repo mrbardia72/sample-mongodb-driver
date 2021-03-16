@@ -19,7 +19,7 @@ func DbConfig() *mongo.Client {
 
 	ctx := context.Background()
 
-	url := options.Client().ApplyURI("mongodb://localhost:27017")
+	url := options.Client().ApplyURI(MONGO_URL)
 
 	// Connect to MongoDB
 	connect, err := mongo.Connect(ctx, url)

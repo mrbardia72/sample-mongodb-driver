@@ -9,7 +9,7 @@ import (
 	"log"
 	"time"
 )
-var userCollection = config.DbConfig().Database("goTest").Collection("users")
+var userCollection = config.DbConfig().Database(config.MONGO_DATABASE).Collection(config.MONGO_COLLECTION)
 
 func main()  {
 	ctx := context.Background()

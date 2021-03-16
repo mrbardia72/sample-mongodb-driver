@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-var userCollection = config.DbConfig().Database("goTest").Collection("users") // get collection "users" from db() which returns *mongo.Client
+var userCollection = config.DbConfig().Database(config.MONGO_DATABASE).Collection(config.MONGO_COLLECTION) // get collection "users" from db() which returns *mongo.Client
 
 func CreateProfile(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
@@ -65,9 +65,10 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)["id"] //get Parameter value as string
 
 	_id, err := primitive.ObjectIDFromHex(params) // convert params to mongodb Hex ID
+
 	if err != nil {
 		fmt.Printf(err.Error())
-	}
+	} 
 
 	var body models.UpdateBody
 	e := json.NewDecoder(r.Body).Decode(&body)

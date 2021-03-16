@@ -13,7 +13,7 @@ import (
 	"log"
 	"net/http"
 )
-var userCollection = config.DbConfig().Database("goTest").Collection("users") // get collection "users" from db() which returns *mongo.Client
+var userCollection = config.DbConfig().Database(config.MONGO_DATABASE).Collection(config.MONGO_COLLECTION) // get collection "users" from db() which returns *mongo.Client
 
 func MinVSMax(w http.ResponseWriter, opertion int) {
 
