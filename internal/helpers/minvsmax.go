@@ -15,7 +15,7 @@ import (
 )
 var userCollection = config.DbConfig().Database(config.MONGO_DATABASE).Collection(config.MONGO_COLLECTION) // get collection "users" from db() which returns *mongo.Client
 
-func MinVSMax(w http.ResponseWriter, opertion int) {
+func MinVSMax(w http.ResponseWriter, opertion int,a int64) {
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -23,7 +23,7 @@ func MinVSMax(w http.ResponseWriter, opertion int) {
 
 	mg := options.Find()
 	mg.SetSort(bson.D{{"age", opertion}})
-	mg.SetLimit(1)
+	mg.SetLimit(a)
 
 	ctx := context.Background()
 	cur, err := userCollection.Find(ctx, bson.D{}, mg)

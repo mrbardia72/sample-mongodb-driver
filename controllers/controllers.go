@@ -13,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -155,12 +156,18 @@ func GetBettwenName(w http.ResponseWriter, r *http.Request) {
 
 func GetMax(w http.ResponseWriter, r *http.Request) {
 	opertion := -1
-	helpers.MinVSMax(w, opertion)
+	//var a int64
+	params := mux.Vars(r)["count"]
+	ss,_ :=strconv.ParseInt(params, 6, 12)
+	helpers.MinVSMax(w, opertion,ss)
 }
 
 func GetMin(w http.ResponseWriter, r *http.Request)  {
 	opertion := 1
-	helpers.MinVSMax(w, opertion)
+	//var a int64
+	params := mux.Vars(r)["count"]
+	ss,_ :=strconv.ParseInt(params, 6, 12)
+	helpers.MinVSMax(w, opertion,ss)
 }
 
 func CountPost(w http.ResponseWriter, r *http.Request)  {
