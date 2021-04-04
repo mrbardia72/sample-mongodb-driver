@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt" 
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -18,6 +19,8 @@ func CheckErr(err error)  {
 func DbConfig() *mongo.Client {
 
 	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
 
 	url := options.Client().ApplyURI(MONGO_URL)
 
